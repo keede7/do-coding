@@ -4,6 +4,7 @@ import org.springframework.boot.web.embedded.tomcat.TomcatServletWebServerFactor
 import org.springframework.boot.web.server.WebServer;
 import org.springframework.boot.web.servlet.server.ServletWebServerFactory;
 import org.springframework.http.HttpHeaders;
+import org.springframework.http.HttpMethod;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 
@@ -28,21 +29,33 @@ public class TobyspringApplication {
         ServletWebServerFactory tomcatServletWebServerFactory = new TomcatServletWebServerFactory();
         // 서블릿컨테이너를 만드는 함수.
         WebServer webServer = tomcatServletWebServerFactory.getWebServer(servletContext -> {
-            servletContext.addServlet("hello", new HttpServlet() {
+            // 모든 요청을 받고 위임처리 역할을 하는 front Controller 로 변경된다.
+            servletContext.addServlet("frontcontroller", new HttpServlet() {
                 @Override
                 protected void service(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-                    // 요청을 받아 동적으로 url을 변경
-                    String name = req.getParameter("name");
+                    // 인증, 보안, 다국어, 공통 기능
 
-                    resp.setStatus(HttpStatus.OK.value());
-                    resp.setHeader(HttpHeaders.CONTENT_TYPE, MediaType.TEXT_PLAIN_VALUE);
-                    resp.getWriter().println("Hello " + name);
+                    String requestURI = req.getRequestURI();
+                    String method = req.getMethod();
+
+                    if (requestURI.equals("/hello") && method.equals(HttpMethod.GET.name())) {
+                        // 요청을 받아 동적으로 url을 변경
+                        String name = req.getParameter("name");
+
+                        resp.setStatus(HttpStatus.OK.value());
+                        resp.setHeader(HttpHeaders.CONTENT_TYPE, MediaType.TEXT_PLAIN_VALUE);
+                        resp.getWriter().println("Hello " + name);
+                    } else if (requestURI.equals("/user")) {
+
+                    } else {
+                        resp.setStatus(HttpStatus.NOT_FOUND.value());
+                    }
                 }
-            }).addMapping("/hello");
+                // 해당 프론트 컨트롤러는 모든 요청을 처리한다.
+            }).addMapping("/*");
         });
         // 톰캣 서블릿 컨테이너 동작.
         webServer.start();
-
     }
 
 }
