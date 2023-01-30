@@ -29,6 +29,8 @@ public class TobyspringApplication {
         ServletWebServerFactory tomcatServletWebServerFactory = new TomcatServletWebServerFactory();
         // 서블릿컨테이너를 만드는 함수.
         WebServer webServer = tomcatServletWebServerFactory.getWebServer(servletContext -> {
+            HelloController helloController = new HelloController();
+
             // 모든 요청을 받고 위임처리 역할을 하는 front Controller 로 변경된다.
             servletContext.addServlet("frontcontroller", new HttpServlet() {
                 @Override
@@ -42,9 +44,11 @@ public class TobyspringApplication {
                         // 요청을 받아 동적으로 url을 변경
                         String name = req.getParameter("name");
 
+                        String ret = helloController.hello(name);
+
                         resp.setStatus(HttpStatus.OK.value());
                         resp.setHeader(HttpHeaders.CONTENT_TYPE, MediaType.TEXT_PLAIN_VALUE);
-                        resp.getWriter().println("Hello " + name);
+                        resp.getWriter().println(ret);
                     } else if (requestURI.equals("/user")) {
 
                     } else {
