@@ -3,6 +3,7 @@ package hello.tobyspring;
 import org.springframework.boot.web.embedded.tomcat.TomcatServletWebServerFactory;
 import org.springframework.boot.web.server.WebServer;
 import org.springframework.boot.web.servlet.server.ServletWebServerFactory;
+import org.springframework.context.support.GenericApplicationContext;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpMethod;
 import org.springframework.http.HttpStatus;
@@ -21,6 +22,12 @@ public class TobyspringApplication {
 
     public static void main(String[] args) {
         System.out.println("Hello Containerless Standalone");
+        // Application Context == Spring Container
+        GenericApplicationContext genericApplicationContext = new GenericApplicationContext();
+        genericApplicationContext.registerBean(HelloController.class);
+        // 처음에 가지고있는 구성정보를 초기화한다.
+        genericApplicationContext.refresh();
+
         /**
          * 서블릿 컨테이너 생성하기.
          * 스프링 부트가 톰캣서블릿 컨테이너를 내장해서 코드로 쉽게 시작해 사용하도록 만든 클래스가 있다.
@@ -29,7 +36,6 @@ public class TobyspringApplication {
         ServletWebServerFactory tomcatServletWebServerFactory = new TomcatServletWebServerFactory();
         // 서블릿컨테이너를 만드는 함수.
         WebServer webServer = tomcatServletWebServerFactory.getWebServer(servletContext -> {
-            HelloController helloController = new HelloController();
 
             // 모든 요청을 받고 위임처리 역할을 하는 front Controller 로 변경된다.
             servletContext.addServlet("frontcontroller", new HttpServlet() {
@@ -44,13 +50,13 @@ public class TobyspringApplication {
                         // 요청을 받아 동적으로 url을 변경
                         String name = req.getParameter("name");
 
+                        HelloController helloController = genericApplicationContext.getBean(HelloController.class);
                         String ret = helloController.hello(name);
 
-                        resp.setStatus(HttpStatus.OK.value());
-                        resp.setHeader(HttpHeaders.CONTENT_TYPE, MediaType.TEXT_PLAIN_VALUE);
+                        // 일반적으로 성공하면 200을 전달한다.
+//                        resp.setStatus(HttpStatus.OK.value());
+                        resp.setContentType(MediaType.TEXT_PLAIN_VALUE);
                         resp.getWriter().println(ret);
-                    } else if (requestURI.equals("/user")) {
-
                     } else {
                         resp.setStatus(HttpStatus.NOT_FOUND.value());
                     }
