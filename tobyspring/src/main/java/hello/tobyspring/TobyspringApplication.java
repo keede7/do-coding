@@ -23,8 +23,12 @@ public class TobyspringApplication {
     public static void main(String[] args) {
         System.out.println("Hello Containerless Standalone");
         // Application Context == Spring Container
+        // 어셈블러를 가져오고
         GenericApplicationContext genericApplicationContext = new GenericApplicationContext();
+        // 각 빈들을 등록시킨다.
         genericApplicationContext.registerBean(HelloController.class);
+        // 등록할 때 구체적은 클래스 타입을 넣어줘야 하기 때문에 인터페이스가 아닌 구현체를 넣는다.
+        genericApplicationContext.registerBean(SimpleHelloService.class);
         // 처음에 가지고있는 구성정보를 초기화한다.
         genericApplicationContext.refresh();
 
