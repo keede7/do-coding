@@ -34,4 +34,17 @@ public class HelloApiTest {
         assertThat(res.getBody()).isEqualTo("Hello Spring");
     }
 
+
+    @Test
+    void failHelloApi() {
+        // RestTemplate을 쓰면 외부 API를 호출할 수 있다.
+        // 만약 400,500 이 발생하면 예외를 발생시킨다.
+        TestRestTemplate rest = new TestRestTemplate();
+
+        // 치환자를 통해서 동적으로 QueryString 을 입력할 수 있도록 변경
+        ResponseEntity<String> res =
+                rest.getForEntity("http://localhost:8080/hello?name=", String.class);
+
+        assertThat(res.getStatusCode()).isEqualTo(HttpStatus.INTERNAL_SERVER_ERROR);
+    }
 }
