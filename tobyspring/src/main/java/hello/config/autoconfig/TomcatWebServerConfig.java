@@ -6,6 +6,7 @@ import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean
 import org.springframework.boot.web.embedded.tomcat.TomcatServletWebServerFactory;
 import org.springframework.boot.web.servlet.server.ServletWebServerFactory;
 import org.springframework.context.annotation.Bean;
+import org.springframework.core.env.Environment;
 
 @MyAutoConfiguration
 // 톰캣과 관련된 클래스가 존재하면 톰캣서버를 띄운다.
@@ -18,7 +19,13 @@ public class TomcatWebServerConfig {
     // 이 Conditional 판단 시점에는 유저구성정보(비즈니스 로직 빈들)이 이미 등록된 상태이다.
     @Bean
     @ConditionalOnMissingBean
-    public ServletWebServerFactory servletWebServerFactory() {
-        return new TomcatServletWebServerFactory();
+    public ServletWebServerFactory servletWebServerFactory(Environment env) {
+
+        TomcatServletWebServerFactory tomcatServletWebServerFactory = new TomcatServletWebServerFactory();
+        // 모든 서블릿 매핑앞에 prefix를 추가할 수 있다.
+//        tomcatServletWebServerFactory.setContextPath("/app");
+        //여기서 프로퍼티 값을 읽어서 지정하는 방식도 할 수 있다.
+        tomcatServletWebServerFactory.setContextPath(env.getProperty("contextPath"));
+        return tomcatServletWebServerFactory;
     }
 }
