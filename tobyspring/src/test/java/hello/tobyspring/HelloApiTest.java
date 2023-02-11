@@ -21,7 +21,7 @@ public class HelloApiTest {
 
         // 치환자를 통해서 동적으로 QueryString 을 입력할 수 있도록 변경
         ResponseEntity<String> res =
-                rest.getForEntity("http://localhost:8080/hello?name={name}", String.class, "Spring");
+                rest.getForEntity("http://localhost:9090/hello?name={name}", String.class, "Spring");
 
         /**
          * 검증 과정
@@ -43,7 +43,7 @@ public class HelloApiTest {
 
         // 치환자를 통해서 동적으로 QueryString 을 입력할 수 있도록 변경
         ResponseEntity<String> res =
-                rest.getForEntity("http://localhost:8080/hello?name=", String.class);
+                rest.getForEntity("http://localhost:9090/hello?name=", String.class);
 
         assertThat(res.getStatusCode()).isEqualTo(HttpStatus.INTERNAL_SERVER_ERROR);
     }
