@@ -6,8 +6,12 @@ import hello.config.EnableMyConfigurationProperties;
 import hello.config.MyAutoConfiguration;
 import hello.config.MyConfigurationProperties;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
+import org.springframework.boot.autoconfigure.condition.ConditionalOnSingleCandidate;
 import org.springframework.context.annotation.Bean;
+import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.datasource.SimpleDriverDataSource;
+import org.springframework.jdbc.support.JdbcTransactionManager;
+import org.springframework.transaction.annotation.EnableTransactionManagement;
 
 import javax.sql.DataSource;
 import java.sql.Driver;
@@ -16,6 +20,8 @@ import java.sql.Driver;
 // JdbcOperations 인터페이스의 경로를 넣는다.
 @ConditionalMyOnClass("org.springframework.jdbc.core.JdbcOperations")
 @EnableMyConfigurationProperties(MyDataSourceProperties.class)
+// AOP 관련된 기능을 넣기위해 추가
+@EnableTransactionManagement
 public class DataSourceConfig {
 
     /**
@@ -51,4 +57,26 @@ public class DataSourceConfig {
         return dataSource;
     }
 
+
+    @Bean
+    // 해당 메서드가 실행될때 DataSource타입의 빈이 하나만 가지고 있다면
+    //그 데이터소스를 가져와서 사용한다.
+    @ConditionalOnSingleCandidate(DataSource.class)
+    @ConditionalOnMissingBean
+    JdbcTemplate jdbcTemplate(DataSource dataSource) {
+        JdbcTemplate jdbcTemplate = new JdbcTemplate();
+        jdbcTemplate.setDataSource(dataSource);
+        return jdbcTemplate;
+    }
+
+    @Bean
+    // 해당 메서드가 실행될때 DataSource타입의 빈이 하나만 가지고 있다면
+    //그 데이터소스를 가져와서 사용한다.
+    @ConditionalOnSingleCandidate(DataSource.class)
+    @ConditionalOnMissingBean
+    JdbcTransactionManager jdbcTransactionManager(DataSource dataSource) {
+        JdbcTransactionManager jdbcTransactionManager = new JdbcTransactionManager();
+        jdbcTransactionManager.setDataSource(dataSource);
+        return jdbcTransactionManager;
+    }
 }
