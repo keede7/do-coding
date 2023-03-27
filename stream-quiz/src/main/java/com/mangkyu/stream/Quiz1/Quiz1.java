@@ -14,7 +14,7 @@ import java.util.stream.Stream;
 public class Quiz1 {
 
     public static void main(String[] args) throws IOException {
-        new Quiz1().quiz2();
+        new Quiz1().quiz3();
     }
 
     // 1.1 각 취미를 선호하는 인원이 몇 명인지 계산하여라.
@@ -45,6 +45,8 @@ public class Quiz1 {
                 .filter(user -> user[0].contains("정"))
                 .map(user -> user[1].trim())
                 .flatMap(hobbies -> Arrays.stream(hobbies.split(":")))
+                // keyMapper의 경우 hobby -> hobby 와 같이 자기 자신(취미 문자열)을 Key로 하지만
+                // 자기 자신을 사용할 경우 항등함수인 Function.identity()로 표현이 가능하다.
                 .collect(Collectors.toMap(Function.identity(), hobby -> 1, (before, after) -> before += after));
 
         System.out.println("result = " + result);
@@ -55,7 +57,15 @@ public class Quiz1 {
     // 1.3 소개 내용에 '좋아'가 몇번 등장하는지 계산하여라.
     public int quiz3() throws IOException {
         List<String[]> csvLines = readCsvLines();
-        return 0;
+
+        final String filterStr = "좋아";
+
+        int sum = csvLines.stream()
+                .filter(user -> user[2].contains(filterStr))
+                .map(user -> user[2].trim())
+                .mapToInt(intro -> intro.length() - intro.replace(filterStr, " ").length()).sum();
+
+        return sum;
     }
 
     private List<String[]> readCsvLines() throws IOException {
