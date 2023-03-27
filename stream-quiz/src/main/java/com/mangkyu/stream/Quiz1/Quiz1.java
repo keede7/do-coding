@@ -63,7 +63,8 @@ public class Quiz1 {
         int sum = csvLines.stream()
                 .filter(user -> user[2].contains(filterStr))
                 .map(user -> user[2].trim())
-                .mapToInt(intro -> intro.length() - intro.replace(filterStr, " ").length()).sum();
+                .mapToInt(intro -> intro.length() - intro.replace(filterStr, " ").length())
+                .sum();
 
         return sum;
     }
