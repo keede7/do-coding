@@ -2,6 +2,9 @@ plugins {
     id 'java'
     id 'org.springframework.boot' version '3.0.2'
     id 'io.spring.dependency-management' version '1.1.0'
+    // Git 관련 헬스 설정
+    // 앱 배포시에 어떤 commit에서 배포됐는지까지 확인할수있어 유용하다.
+    id "com.gorylenko.gradle-git-properties" version "2.4.1" //git info
 }
 
 group = 'hello'
@@ -35,4 +38,10 @@ dependencies {
 
 tasks.named('test') {
     useJUnitPlatform()
+}
+
+// build 관련 헬스설정
+// build/META-INF 하위 폴더에 파일이 생성됨.
+springBoot {
+    buildInfo()
 }
