@@ -54,6 +54,12 @@ logging:
     # ?? ???? ????.
     hello.controller: debug
 
+# ?? ??? ?? ???
+server:
+  tomcat:
+    mbeanregistry:
+      enabled: true
+
 #{
 # "status": "UP",
 # "components": {
