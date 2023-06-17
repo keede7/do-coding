@@ -26,6 +26,9 @@ dependencies {
     implementation 'org.springframework.boot:spring-boot-starter-web'
     implementation 'org.springframework.boot:spring-boot-starter-actuator' //actuator 추가
 
+    // 액츄에이터가 자동으로 마이크로미터 프로메테우스 구현체를 등록하고 동작하도록 한다.
+    implementation 'io.micrometer:micrometer-registry-prometheus'
+
     compileOnly 'org.projectlombok:lombok'
     runtimeOnly 'com.h2database:h2'
     annotationProcessor 'org.projectlombok:lombok'
