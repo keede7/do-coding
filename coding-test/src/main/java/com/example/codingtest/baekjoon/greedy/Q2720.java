@@ -3,7 +3,6 @@ package com.example.codingtest.baekjoon.greedy;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
-import java.util.Arrays;
 
 /**
  * 문제
@@ -32,7 +31,7 @@ import java.util.Arrays;
  *
  */
 public class Q2720 {
-    private static final double[] COINS = {25.0, 10.0, 5.0, 1.0};
+    private static final int[] COINS = {25, 10, 5, 1};
 
     public static void main(String[] args) throws IOException {
 
@@ -40,24 +39,22 @@ public class Q2720 {
 
         int count = Integer.parseInt(br.readLine());
 
-        Integer[][] moneys = new Integer[count][COINS.length];
-
         for (int i = 0; i < count; i++) {
             int targetCoins = Integer.parseInt(br.readLine());
 
-            double quarter = targetCoins / COINS[0];
-            double dime = (targetCoins % COINS[0]) / COINS[1];
-            double nickel = (targetCoins % COINS[1]) / COINS[2];
-            double penny = (targetCoins % COINS[2]) / COINS[3];
-            System.out.println("quarter = " + quarter);
-            System.out.println("dime = " + dime);
-            System.out.println("nickel = " + nickel);
-            System.out.println("penny = " + penny);
+            int quarter = targetCoins / COINS[0];
+            targetCoins = targetCoins % COINS[0];
 
-            System.out.println();
+            int dime =  (targetCoins % COINS[0]) / COINS[1];
+            targetCoins = targetCoins % COINS[1];
+
+            int nickel =  (targetCoins % COINS[1]) / COINS[2];
+            targetCoins = targetCoins % COINS[2];
+
+            int penny =  (targetCoins % COINS[2]) / COINS[3];
+
+            System.out.println(String.format("%d %d %d %d", quarter, dime, nickel, penny));
         }
-
-        System.out.println("moneys = " + Arrays.deepToString(moneys));
     }
 
 }
