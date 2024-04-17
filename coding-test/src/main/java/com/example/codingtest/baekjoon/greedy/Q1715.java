@@ -30,44 +30,24 @@ public class Q1715 {
 
         long target = Long.parseLong(br.readLine());
 
-        if(target == 1L) {
-            System.out.println(Long.parseLong(br.readLine()));
-            return;
-        }
-
-        List<Long> linkedList = new LinkedList<>();
+        PriorityQueue<Long> queue = new PriorityQueue<>();
 
         for (long i = 0; i < target; i++) {
-            linkedList.add(Long.parseLong(br.readLine()));
+            queue.add(Long.parseLong(br.readLine()));
         }
 
-        Collections.sort(linkedList);
+        long result = 0;
 
-        List<Long> values = new ArrayList<>(linkedList);
+        while(queue.size() > 1) {
+            long before = queue.poll();
+            long after = queue.poll();
 
-        List<Long> resultList = new LinkedList<>();
+            long sum = before + after;
 
-        /*
-            만약에 이전에 합친 값과 다음 값을 합칠 때 다음값+다음 1번째 값을 합친 값을 비교 했을 때 이전에 합친 값이 더 크면 후자값들을 합쳐서 넣는다.
-         */
-
-        for (int i = 1; i < values.size(); i++) {
-
-            if(i == 1) {
-                long sum = values.get(i-1) + values.get(i);
-                resultList.add(sum);
-            }
-
-            Long l = resultList.get(i - 2);
-            Long l1 = values.get(i);
-            long sum = resultList.get(i-2) + values.get(i);
-            resultList.add(sum);
-
+            result += sum;
+            queue.add(sum);
         }
 
-        long value = resultList.stream()
-                .reduce(0L, Long::sum);
-
-        System.out.println(value);
+        System.out.println(result);
     }
 }
