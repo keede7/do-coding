@@ -29,8 +29,26 @@ public class Q14916 {
 
         StringTokenizer st = new StringTokenizer(br.readLine());
 
-        int coin = Integer.parseInt(st.nextToken());
+        int remainCoin = Integer.parseInt(st.nextToken());
 
+        int count = 0;
+
+        while (remainCoin > 0) {
+            if(remainCoin % 5 == 0) {
+                count += remainCoin / 5;
+                break;
+            } else {
+                remainCoin -= 2;
+                count++;
+            }
+        }
+
+        if(remainCoin < 0) {
+            System.out.println("-1");
+            return;
+        }
+
+        System.out.println(count);
     }
 
 }
