@@ -49,9 +49,55 @@ public class Q1049 {
 
         final int packageCount = 6;
 
-        for(int idx = 0; idx < size; idx++) {
+//        for(int idx = 0; idx < size; idx++) {
+            // 필요한 기타줄을 패키지 개수로 몫과 나머지를 구한다.
+            int quotient = count / packageCount;
+            int remains = count % packageCount;
+        System.out.println("quotient = " + quotient);
+        System.out.println("remains = " + remains);
 
+            int packagePrice = packages.poll();
+            int piecePrice = piece.poll();
+
+            // 낱개 가격 * 나머지 값의 가격이 패키지 가격보다 높으면
+            // 몫 + 1의 계산값과 패키지가격을 곱한다.
+        System.out.println("piecePrice * remains = " + piecePrice * remains);
+        System.out.println("piecePrice * count  = " + piecePrice * count);
+        System.out.println("packagePrice = " + packagePrice);
+
+        // 나머지 값을 낱개로 계산했을 떄 패키지 금액보다 싸면 낱개 금액을 추가시켜둔다.
+        if(piecePrice * remains <= packagePrice) {
+            money += piecePrice * remains;
+            System.out.println("money1 = " + money);
+        } else {
+            System.out.println("money = " + money);
         }
+        // 그 다음 몫과 패키지금액을 곱한 값과 몫*6*낱개금액 을 비교해서 패키지금액이 더 크면 패키지금액을 더한다.
+        // 그게 아니라면 몫*6*낱개금액을 더한다.
+        System.out.println();
+        System.out.println("quotient * packagePrice = " + quotient * packagePrice);
+        System.out.println("quotient * 6 * piecePrice = " + quotient * 6 * piecePrice);
+
+        if( (quotient * packagePrice) > (quotient * 6 * piecePrice) ) {
+            money += quotient * packagePrice;
+        } else {
+            money += quotient * 6 * piecePrice;
+        }
+
+
+//            if(piecePrice * count > packagePrice) {
+//                money += quotient * packagePrice;
+//                money += remains * piecePrice;
+//                System.out.println("money1 = " + money);
+//            } else {
+//                money += count * piecePrice;
+//                System.out.println("money2 = " + money);
+//            }
+
+//            if(piecePrice * remains > packagePrice) {
+//
+//            }
+//        }
 
         // 패키지 가격으로 우선 계산할 경우 (예제 계산은 맞으나 반례가 존재하여 실패)
 //        for(int idx = 0; idx < size; idx++) {
