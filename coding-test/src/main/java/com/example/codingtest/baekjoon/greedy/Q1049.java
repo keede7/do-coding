@@ -33,10 +33,10 @@ public class Q1049 {
         BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
 
         String[] input = br.readLine().split(" ");
-        int count = Integer.parseInt(input[0]);
+        int 필요한_기타_끈_수 = Integer.parseInt(input[0]);
         int size = Integer.parseInt(input[1]);
 
-        int money = 0;
+        int 필요금액 = 0;
 
         for (int i = 0; i < size; i++) {
             String[] sample = br.readLine().split(" ");
@@ -47,43 +47,50 @@ public class Q1049 {
         System.out.println("packages = " + packages);
         System.out.println("piece = " + piece);
 
-        final int packageCount = 6;
+        final int 패키지_개수 = 6;
 
 //        for(int idx = 0; idx < size; idx++) {
             // 필요한 기타줄을 패키지 개수로 몫과 나머지를 구한다.
-            int quotient = count / packageCount;
-            int remains = count % packageCount;
-        System.out.println("quotient = " + quotient);
-        System.out.println("remains = " + remains);
+            int 몫 = 필요한_기타_끈_수 / 패키지_개수;
+            int 나머지값 = 필요한_기타_끈_수 % 패키지_개수;
+        System.out.println("몫 = " + 몫);
+        System.out.println("나머지값 = " + 나머지값);
 
-            int packagePrice = packages.poll();
-            int piecePrice = piece.poll();
+            int 패키지가격 = packages.poll();
+            int 낱개당가격 = piece.poll();
 
             // 낱개 가격 * 나머지 값의 가격이 패키지 가격보다 높으면
             // 몫 + 1의 계산값과 패키지가격을 곱한다.
-        System.out.println("piecePrice * remains = " + piecePrice * remains);
-        System.out.println("piecePrice * count  = " + piecePrice * count);
-        System.out.println("packagePrice = " + packagePrice);
+        System.out.println("낱개당가격 * 나머지값 = " + 낱개당가격 * 나머지값);
+        System.out.println("낱개당가격 * 필요한_기타_끈_수  = " + 낱개당가격 * 필요한_기타_끈_수);
+        System.out.println("패키지가격 = " + 패키지가격);
 
-        // 나머지 값을 낱개로 계산했을 떄 패키지 금액보다 싸면 낱개 금액을 추가시켜둔다.
-        if(piecePrice * remains <= packagePrice) {
-            money += piecePrice * remains;
-            System.out.println("money1 = " + money);
-        } else {
-            System.out.println("money = " + money);
+        // 낱개 당 가격으로 모두 샀을때 합리적이면 모두 구매한다.
+        if( 낱개당가격 * 필요한_기타_끈_수 <= 패키지가격 ){
+            필요금액 += 낱개당가격 * 필요한_기타_끈_수;
+            System.out.println("money = " + 필요금액);
+            return;
         }
-        // 그 다음 몫과 패키지금액을 곱한 값과 몫*6*낱개금액 을 비교해서 패키지금액이 더 크면 패키지금액을 더한다.
-        // 그게 아니라면 몫*6*낱개금액을 더한다.
+
+
+//        if(나머지값 * 낱개당가격 <= 패키지가격) {
+//            필요금액 += 나머지값 * 낱개당가격;
+//        } else {
+//            필요금액 += 패키지가격 * (몫 + 1);
+//        }
+
+        System.out.println("필요금액 = " + 필요금액);
+        // 그 다음 몫과 패키지금액을 곱한 값과 몫 * 6 * 낱개금액 을 비교해서 패키지금액이 더 크면 패키지금액을 더한다.
+        // 그게 아니라면 몫 * 6 * 낱개금액을 더한다.
         System.out.println();
-        System.out.println("quotient * packagePrice = " + quotient * packagePrice);
-        System.out.println("quotient * 6 * piecePrice = " + quotient * 6 * piecePrice);
+        System.out.println("몫 * 패키지가격 = " + 몫 * 패키지가격);
+        System.out.println("몫 * 6 * 낱개당가격 = " + 몫 * 6 * 낱개당가격);
 
-        if( (quotient * packagePrice) > (quotient * 6 * piecePrice) ) {
-            money += quotient * packagePrice;
+        if( (몫 * 패키지가격) > (몫 * 6 * 낱개당가격) ) {
+            필요금액 += 몫 * 패키지가격;
         } else {
-            money += quotient * 6 * piecePrice;
+            필요금액 += 몫 * 6 * 낱개당가격;
         }
-
 
 //            if(piecePrice * count > packagePrice) {
 //                money += quotient * packagePrice;
@@ -138,7 +145,7 @@ public class Q1049 {
 //            }
 //        }
 
-        System.out.println("money = " + money);
+        System.out.println("money = " + 필요금액);
     }
 
 }
