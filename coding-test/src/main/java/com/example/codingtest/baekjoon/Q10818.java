@@ -19,42 +19,41 @@ import java.util.*;
  */
 public class Q10818 {
 
-
     // Memory 165_400KB, Time 720ms
-//    public static void main(String[] args) throws IOException {
-//
-//        BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
-//
-//        int count = Integer.parseInt(
-//                br.readLine().trim()
-//        );
-//
-//        if(count == 1){
-//            String input = br.readLine()
-//                    .trim();
-//
-//            System.out.printf("%s %s", input, input);
-//            return;
-//        }
-//
-//        Queue<Integer> minQueue = new PriorityQueue<>();
-//        Queue<Integer> maxQueue = new PriorityQueue<>(Collections.reverseOrder());
-//
-//        Arrays.stream(
-//                br.readLine()
-//                        .trim()
-//                        .split(" ")
-//                )
-//                .mapToInt(Integer::parseInt)
-//                .forEach(value -> {
-//                    maxQueue.add(value);
-//                    minQueue.add(value);
-//                });
-//
-//        int min = minQueue.poll();
-//        int max = maxQueue.poll();
-//
-//        System.out.printf("%d %d", min, max);
-//    }
+    public static void main(String[] args) throws IOException {
+
+        BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
+
+        int count = Integer.parseInt(
+                br.readLine().trim()
+        );
+
+        if(count == 1){
+            String input = br.readLine()
+                    .trim();
+
+            System.out.printf("%s %s", input, input);
+            return;
+        }
+
+        Queue<Integer> minQueue = new PriorityQueue<>();
+        Queue<Integer> maxQueue = new PriorityQueue<>(Collections.reverseOrder());
+
+        Arrays.stream(
+                br.readLine()
+                        .trim()
+                        .split(" ")
+                )
+                .mapToInt(Integer::parseInt)
+                .forEach(value -> {
+                    maxQueue.add(value);
+                    minQueue.add(value);
+                });
+
+        int min = minQueue.poll();
+        int max = maxQueue.poll();
+
+        System.out.printf("%d %d", min, max);
+    }
 
 }
