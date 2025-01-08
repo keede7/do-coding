@@ -1,5 +1,11 @@
 package com.example.codingtest.baekjoon.dp;
 
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStreamReader;
+import java.util.Arrays;
+import java.util.StringTokenizer;
+
 /**
  * 문제
  * 정수 X에 사용할 수 있는 연산은 다음과 같이 세 가지 이다.
@@ -27,4 +33,65 @@ package com.example.codingtest.baekjoon.dp;
  * 10의 경우에 10 → 9 → 3 → 1 로 3번 만에 만들 수 있다.
  */
 public class Q1463 {
+    public static void main(String[] args) throws IOException {
+
+        BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
+        StringTokenizer st = new StringTokenizer(br.readLine());
+
+        int input = Integer.parseInt(st.nextToken());
+
+        D = new int[input+1];
+        Arrays.fill(D, -1);
+        //baseCase
+        D[1] = 0;
+
+        System.out.println("Arrays.toString(D) = " + Arrays.toString(D));
+
+        int result = dp(input);
+
+        System.out.println(result);
+    }
+
+    static int[] D;
+
+    public static int dp(int n) {
+        if(D[n] != -1) {
+            System.out.println("n = " + n);
+            return D[n];
+        }
+
+        System.out.println("B D["+n+"] = " + D[n]);
+        D[n] = dp(n-1)+1;
+        System.out.println("A D["+n+"] = " + D[n]);
+        if(n%2==0) {
+            System.out.println("2나누기");
+            D[n] = Integer.min(D[n], dp(n / 2) + 1);
+        }
+
+        if(n%3==0) {
+            System.out.println("3나누기");
+            D[n] = Integer.min(D[n], dp(n / 3) + 1);
+        }
+
+        System.out.println("C D["+n+"] = " + D[n]);
+        System.out.println();
+        return D[n];
+    }
+
+    public static int dp2(int n) {
+        if (D[n] != -1)
+            return D[n];
+
+        D[n] = dp(n-1) + 1;
+        if (n % 2 == 0) {
+            int temp = dp(n / 2) + 1;
+            if (D[n] > temp) D[n] = temp;
+        }
+        if (n % 3 == 0) {
+            int temp = dp(n / 3) + 1;
+            if (D[n] > temp) D[n] = temp;
+        }
+
+        return D[n];
+    }
 }
