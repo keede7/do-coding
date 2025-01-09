@@ -42,10 +42,8 @@ public class Q1463 {
 
         D = new int[input+1];
         Arrays.fill(D, -1);
-        //baseCase
+        //baseCase = 2일땐 1이 맞으므로 기본 케이스로 둔다.
         D[1] = 0;
-
-        System.out.println("Arrays.toString(D) = " + Arrays.toString(D));
 
         int result = dp(input);
 
@@ -56,42 +54,23 @@ public class Q1463 {
 
     public static int dp(int n) {
         if(D[n] != -1) {
-            System.out.println("n = " + n);
             return D[n];
         }
 
-        System.out.println("B D["+n+"] = " + D[n]);
+        // 1을 더하는 이유는 이전 값보다는 최소한 한번은 더 연산을 해야하기 때문이다.
         D[n] = dp(n-1)+1;
-        System.out.println("A D["+n+"] = " + D[n]);
+
         if(n%2==0) {
-            System.out.println("2나누기");
-            D[n] = Integer.min(D[n], dp(n / 2) + 1);
+            int calc = dp(n / 2) + 1;
+            D[n] = Integer.min(D[n], calc);
         }
 
         if(n%3==0) {
-            System.out.println("3나누기");
-            D[n] = Integer.min(D[n], dp(n / 3) + 1);
-        }
-
-        System.out.println("C D["+n+"] = " + D[n]);
-        System.out.println();
-        return D[n];
-    }
-
-    public static int dp2(int n) {
-        if (D[n] != -1)
-            return D[n];
-
-        D[n] = dp(n-1) + 1;
-        if (n % 2 == 0) {
-            int temp = dp(n / 2) + 1;
-            if (D[n] > temp) D[n] = temp;
-        }
-        if (n % 3 == 0) {
-            int temp = dp(n / 3) + 1;
-            if (D[n] > temp) D[n] = temp;
+            int calc = dp(n / 3) + 1;
+            D[n] = Integer.min(D[n], calc);
         }
 
         return D[n];
     }
+
 }
