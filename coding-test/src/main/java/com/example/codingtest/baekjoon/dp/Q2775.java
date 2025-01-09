@@ -1,5 +1,12 @@
 package com.example.codingtest.baekjoon.dp;
 
+import java.io.*;
+import java.util.Arrays;
+import java.util.PriorityQueue;
+import java.util.Queue;
+import java.util.StringTokenizer;
+import java.util.stream.IntStream;
+
 /**
  * 평소 반상회에 참석하는 것을 좋아하는 주희는 이번 기회에 부녀회장이 되고 싶어 각 층의 사람들을 불러 모아 반상회를 주최하려고 한다.
  *
@@ -24,6 +31,72 @@ package com.example.codingtest.baekjoon.dp;
  * 3
  */
 public class Q2775 {
+/*
+    1층 3호에 산다   => 0층의 1,2,3 => 6명
+    2층 3호에 산다.. => 1층의 1,3,6 => 10명
+    3층 3호에 산다.. => 2층의 1,4,10 => 15명
+    4층 3호에 산다.. => 3층의 1,5,15 => 21명
 
+    1층 2호에 산다   => 0층의 1,2 => 3명
+    2층 2호에 산다.. => 1층의 1,3 => 4명
+    3층 2호에 산다.. => 2층의 1,4 => 5명
+    4층 2호에 산다.. => 3층의 1,5 => 6명
+
+                     N층의 N, (N, N+1), (N , N+1, N+2)
+ */
+
+    static int[] G_STAIR;
+    static Queue<Integer> queue = new PriorityQueue<>();
+    public static void main(String[] args) throws IOException {
+        BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
+        BufferedWriter bw = new BufferedWriter(new OutputStreamWriter(System.out));
+        StringTokenizer st = new StringTokenizer(br.readLine());
+
+        int HO = Integer.parseInt(st.nextToken());
+
+        G_STAIR = new int[15];
+
+        for (int i = 0; i < G_STAIR.length; i++) {
+            G_STAIR[i] = i;
+        }
+
+        for (int i = 0; i < HO; i++) {
+            st = new StringTokenizer(br.readLine());
+            int stair = Integer.parseInt(st.nextToken());
+
+            st = new StringTokenizer(br.readLine());
+            int ho = Integer.parseInt(st.nextToken());
+
+            // DP ON
+            int result = dp(stair, ho);
+            System.out.println("result = " + result);
+            queue.add(result);
+            System.out.println("queue.poll() : " + queue.poll());
+            System.out.println("queue.poll() : " + queue.poll());
+        }
+
+
+    }
+
+    private static int dp(int stair, int ho) {
+        if(stair <= 1) {
+            return IntStream
+                    .rangeClosed(1, ho)
+                    .sum();
+        }
+
+        for (int i = 0; i < stair; i++) {
+            for (int j = ho; j > 0; j--) {
+                System.out.println("ho = " + ho);
+                int c = Arrays.stream(G_STAIR).limit(j+1).sum();
+                System.out.println("c = " + c);
+                G_STAIR[j] = c;
+            }
+        }
+
+        System.out.println("Arrays.toString(G_STAIR) = " + Arrays.toString(G_STAIR));
+
+        return G_STAIR[ho];
+    }
 
 }
